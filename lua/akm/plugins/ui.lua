@@ -46,7 +46,7 @@ return {
       vim.cmd.colorscheme("tokyonight-night")
     end,
   },
-  ]]--
+  ]] --
 
   --[[
   {
@@ -58,7 +58,7 @@ return {
       vim.cmd.colorscheme("rose-pine")
     end,
   },
-  ]]--
+  ]] --
 
   -- Lualine - Statusline
   {
@@ -90,7 +90,7 @@ return {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = {
-            { "filename", path = 1 },
+            { "filename",  path = 1 },
             { lsp_progress },
           },
           lualine_x = { "encoding", "fileformat", "filetype" },

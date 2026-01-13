@@ -2,22 +2,20 @@
 -- LSP configuration with Mason
 
 return {
-  -- Mason: LSP/DAP/Linter installer
+  -- Mason: Installer
   {
     "williamboman/mason.nvim",
     lazy = false,
-    config = function()
-      require("mason").setup({
-        ui = {
-          border = "rounded",
-          icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗"
-          }
+    opts = {
+      ui = {
+        border = "rounded",
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗"
         }
-      })
-    end,
+      }
+    },
   },
 
   -- Mason-LSPConfig bridge
@@ -25,18 +23,12 @@ return {
     "williamboman/mason-lspconfig.nvim",
     lazy = false,
     dependencies = { "mason.nvim" },
-    config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "lua_ls",
-          "pyright",
-          "ts_ls",
-          "rust_analyzer",
-          "clangd",
-        },
-        automatic_installation = true,
-      })
-    end,
+    opts = {
+      ensure_installed = {
+        "lua_ls", "pyright", "ts_ls", "rust_analyzer", "clangd",
+      },
+      automatic_installation = true,
+    },
   },
 
   -- LSP Configuration
@@ -52,36 +44,30 @@ return {
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Keymaps on LSP attach (Primeagen style with 'v' prefix)
-      local on_attach = function(client, bufnr)
-        local map = function(mode, lhs, rhs, desc)
-          vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
-        end
+      -- 1. Modern LspAttach Autocommand (Decouples keymaps from server setup)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+        callback = function(ev)
+          local opts = { buffer = ev.buf }
+          local map = function(mode, lhs, rhs, desc)
+            opts.desc = desc
+            vim.keymap.set(mode, lhs, rhs, opts)
+          end
 
-        -- Navigation
-        map("n", "gd", vim.lsp.buf.definition, "Go to definition")
-        map("n", "K", vim.lsp.buf.hover, "Hover documentation")
-        map("n", "<leader>vws", vim.lsp.buf.workspace_symbol, "Workspace symbols")
-        map("n", "<leader>vd", vim.diagnostic.open_float, "Diagnostics float")
-        map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
-        map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
-        map("n", "<leader>vca", vim.lsp.buf.code_action, "Code action")
-        map("n", "<leader>vrr", vim.lsp.buf.references, "References")
-        map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
-        map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature help")
+          map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+          map("n", "K", vim.lsp.buf.hover, "Hover documentation")
+          map("n", "<leader>vws", vim.lsp.buf.workspace_symbol, "Workspace symbols")
+          map("n", "<leader>vd", vim.diagnostic.open_float, "Diagnostics float")
+          map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
+          map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+          map("n", "<leader>vca", vim.lsp.buf.code_action, "Code action")
+          map("n", "<leader>vrr", vim.lsp.buf.references, "References")
+          map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
+          map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature help")
+        end,
+      })
 
-        -- Format on save (if server supports it)
-        if client.supports_method("textDocument/formatting") then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({ async = false })
-            end,
-          })
-        end
-      end
-
-      -- UI customization
+      -- 2. FIX: Use new 'signs.text' API instead of deprecated 'sign_define'
       vim.diagnostic.config({
         virtual_text = {
           prefix = "●",
@@ -91,27 +77,25 @@ return {
           source = "if_many",
           border = "rounded",
         },
-        signs = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.HINT] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
+          },
+        },
         underline = true,
         update_in_insert = false,
         severity_sort = true,
       })
 
-      -- Signs in gutter (modern API)
-      local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      end
-
-      -- Server configurations
+      -- Server Definitions
       local servers = {
         lua_ls = {
           settings = {
             Lua = {
-              diagnostics = {
-                globals = { "vim" },
-              },
+              diagnostics = { globals = { "vim" } },
               workspace = {
                 library = vim.api.nvim_get_runtime_file("", true),
                 checkThirdParty = false,
@@ -126,7 +110,6 @@ return {
               analysis = {
                 typeCheckingMode = "basic",
                 autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
               },
             },
           },
@@ -136,24 +119,29 @@ return {
         clangd = {},
       }
 
-      -- Setup servers
+      -- 3. FIX: Handle deprecation of lspconfig framework in Neovim 0.11+
       for server, config in pairs(servers) do
-        lspconfig[server].setup(vim.tbl_deep_extend("force", {
-          capabilities = capabilities,
-          on_attach = on_attach,
-        }, config))
+        -- Merge defaults
+        config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {})
+
+        if vim.fn.has("nvim-0.11") == 1 then
+          -- New native API for 0.11+
+          vim.lsp.config(server, config)
+          vim.lsp.enable(server)
+        else
+          -- Legacy API for 0.10
+          lspconfig[server].setup(config)
+        end
       end
     end,
   },
 
-  -- LazyDev for Neovim Lua development
+  -- LazyDev (Lua dev)
   {
     "folke/lazydev.nvim",
     ft = "lua",
     opts = {
-      library = {
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
-      },
+      library = { { path = "luvit-meta/library", words = { "vim%.uv" } } },
     },
   },
 }

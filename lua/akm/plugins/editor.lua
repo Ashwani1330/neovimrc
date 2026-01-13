@@ -65,7 +65,7 @@ return {
     end,
   },
 
-  -- Autopairs - Auto close brackets, quotes, etc.
+  -- Autopairs
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
@@ -88,7 +88,7 @@ return {
     },
   },
 
-  -- Comment.nvim - Smart commenting
+  -- Comment.nvim
   {
     "numToStr/Comment.nvim",
     event = { "BufReadPost", "BufNewFile" },
@@ -102,44 +102,30 @@ return {
     end,
   },
 
-  -- Mini.nvim - Collection of minimal plugins
+  -- Mini.nvim
   {
     "echasnovski/mini.nvim",
     event = "VeryLazy",
     config = function()
-      -- Surround (ys, ds, cs operators)
       require("mini.surround").setup({
         mappings = {
           add = "ys",
           delete = "ds",
+          replace = "cs",
           find = "",
           find_left = "",
           highlight = "",
-          replace = "cs",
           update_n_lines = "",
         },
       })
-
-      -- Better text objects (ia, aa, etc.)
-      require("mini.ai").setup({
-        n_lines = 500,
-      })
-
-      -- Indent scope visualization
-      require("mini.indentscope").setup({
-        symbol = "│",
-        options = { try_as_border = true },
-      })
-
-      -- Move lines and selections
+      require("mini.ai").setup({ n_lines = 500 })
+      require("mini.indentscope").setup({ symbol = "│", options = { try_as_border = true } })
       require("mini.move").setup({
         mappings = {
-          -- Move visual selection
           left = "<M-h>",
           right = "<M-l>",
           down = "<M-j>",
           up = "<M-k>",
-          -- Move current line
           line_left = "<M-h>",
           line_right = "<M-l>",
           line_down = "<M-j>",
@@ -149,31 +135,25 @@ return {
     end,
   },
 
-  -- Illuminate - Highlight word under cursor
+  -- Illuminate
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       delay = 200,
       large_file_cutoff = 2000,
-      large_file_overrides = {
-        providers = { "lsp" },
-      },
+      large_file_overrides = { providers = { "lsp" } },
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
-
-      -- Keymaps
-      vim.keymap.set("n", "]]", function()
-        require("illuminate").goto_next_reference(false)
-      end, { desc = "Next Reference" })
-      vim.keymap.set("n", "[[", function()
-        require("illuminate").goto_prev_reference(false)
-      end, { desc = "Prev Reference" })
+      vim.keymap.set("n", "]]", function() require("illuminate").goto_next_reference(false) end,
+        { desc = "Next Reference" })
+      vim.keymap.set("n", "[[", function() require("illuminate").goto_prev_reference(false) end,
+        { desc = "Prev Reference" })
     end,
   },
 
-  -- Undotree - Visual undo history
+  -- Undotree
   {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
@@ -184,87 +164,41 @@ return {
 
   -- File Explorer Options: Choose ONE
 
-  -- Option 1: nvim-tree (Traditional tree view on the right)
+  -- Option 1: nvim-tree
   {
     "nvim-tree/nvim-tree.lua",
     lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
       { "<leader>pv", "<cmd>NvimTreeToggle<cr>", desc = "File Explorer" },
-      { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "File Explorer" },
+      { "<leader>e",  "<cmd>NvimTreeToggle<cr>", desc = "File Explorer" },
     },
     opts = {
       sort_by = "case_sensitive",
-      view = {
-        side = "right",
-        width = 35,
-      },
-      renderer = {
-        group_empty = true,
-        icons = {
-          show = {
-            file = true,
-            folder = true,
-            folder_arrow = true,
-            git = true,
-          },
-        },
-      },
-      filters = {
-        dotfiles = false,
-      },
-      git = {
-        enable = true,
-        ignore = false,
-      },
+      view = { side = "right", width = 35 },
+      renderer = { group_empty = true },
+      filters = { dotfiles = false },
+      git = { enable = true, ignore = false },
     },
   },
 
-  -- Option 2: Oil.nvim (Edit filesystem like a buffer)
-  -- Uncomment this and comment nvim-tree above if you prefer Oil
-  --[[
-  {
-    "stevearc/oil.nvim",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    keys = {
-      { "<leader>pv", "<cmd>Oil<cr>", desc = "File Explorer" },
-      { "<leader>e", "<cmd>Oil<cr>", desc = "File Explorer" },
-      { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
-    },
-    opts = {
-      default_file_explorer = true,
-      columns = {
-        "icon",
-        "permissions",
-        "size",
-        "mtime",
-      },
-      view_options = {
-        show_hidden = true,
-      },
-      keymaps = {
-        ["g?"] = "actions.show_help",
-        ["<CR>"] = "actions.select",
-        ["<C-v>"] = "actions.select_vsplit",
-        ["<C-x>"] = "actions.select_split",
-        ["<C-t>"] = "actions.select_tab",
-        ["<C-p>"] = "actions.preview",
-        ["<C-c>"] = "actions.close",
-        ["<C-r>"] = "actions.refresh",
-        ["-"] = "actions.parent",
-        ["_"] = "actions.open_cwd",
-        ["`"] = "actions.cd",
-        ["~"] = "actions.tcd",
-        ["gs"] = "actions.change_sort",
-        ["gx"] = "actions.open_external",
-        ["g."] = "actions.toggle_hidden",
-      },
-    },
-  },
-  ]]--
+  -- Option 2: Oil.nvim (Uncomment below to use Oil)
+  -- {
+  --   "stevearc/oil.nvim",
+  --   lazy = false,
+  --   dependencies = { "nvim-tree/nvim-web-devicons" },
+  --   keys = {
+  --     { "<leader>pv", "<cmd>Oil<cr>", desc = "File Explorer" },
+  --     { "<leader>e", "<cmd>Oil<cr>", desc = "File Explorer" },
+  --     { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
+  --   },
+  --   opts = {
+  --     default_file_explorer = true,
+  --     view_options = { show_hidden = true },
+  --   },
+  -- },
 
-  -- Conform.nvim - Better formatting
+  -- Conform.nvim
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -272,9 +206,7 @@ return {
     keys = {
       {
         "<leader>f",
-        function()
-          require("conform").format({ async = true, lsp_fallback = true })
-        end,
+        function() require("conform").format({ async = true, lsp_fallback = true }) end,
         mode = "",
         desc = "Format buffer",
       },
@@ -297,20 +229,20 @@ return {
     },
   },
 
-  -- Trouble.nvim - Better diagnostics UI
+  -- Trouble.nvim (Fixed formatting)
   {
     "folke/trouble.nvim",
     cmd = { "Trouble" },
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      { "<leader>xl", "<cmd>Trouble loclist toggle<cr>",                  desc = "Location List (Trouble)" },
+      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>",                   desc = "Quickfix List (Trouble)" },
     },
     opts = {},
   },
 
-  -- Cloak - Hide sensitive data (env files, etc.)
+  -- Cloak
   {
     "laytan/cloak.nvim",
     event = "VeryLazy",
@@ -320,18 +252,14 @@ return {
       highlight_group = "Comment",
       patterns = {
         {
-          file_pattern = {
-            ".env*",
-            "wrangler.toml",
-            ".dev.vars",
-          },
+          file_pattern = { ".env*", "wrangler.toml", ".dev.vars" },
           cloak_pattern = "=.+"
         },
       },
     },
   },
 
-  -- Render Markdown - Better markdown preview
+  -- Render Markdown
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = "markdown",

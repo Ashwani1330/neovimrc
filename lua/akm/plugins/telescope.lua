@@ -12,30 +12,33 @@ return {
     },
   },
   keys = {
+    -- Open Telescope
+    { "<leader>px",  "<cmd>Telescope<cr>",                           desc = "Telescope" },
+
     -- File pickers
-    { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-    { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
-    { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+    { "<leader>ff",  "<cmd>Telescope find_files<cr>",                desc = "Find Files" },
+    { "<leader>fr",  "<cmd>Telescope oldfiles<cr>",                  desc = "Recent Files" },
+    { "<leader>fb",  "<cmd>Telescope buffers<cr>",                   desc = "Buffers" },
 
     -- Search
-    { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-    { "<leader>fw", "<cmd>Telescope grep_string<cr>", desc = "Find Word" },
-    { "<leader>fc", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Find in Current Buffer" },
+    { "<leader>fg",  "<cmd>Telescope live_grep<cr>",                 desc = "Live Grep" },
+    { "<leader>fw",  "<cmd>Telescope grep_string<cr>",               desc = "Find Word" },
+    { "<leader>fc",  "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Find in Current Buffer" },
 
     -- LSP
-    { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
-    { "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace Symbols" },
+    { "<leader>fs",  "<cmd>Telescope lsp_document_symbols<cr>",      desc = "Document Symbols" },
+    { "<leader>fS",  "<cmd>Telescope lsp_workspace_symbols<cr>",     desc = "Workspace Symbols" },
 
     -- Utility
-    { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
-    { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-    { "<leader>fm", "<cmd>Telescope marks<cr>", desc = "Marks" },
-    { "<leader>f:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+    { "<leader>fh",  "<cmd>Telescope help_tags<cr>",                 desc = "Help Tags" },
+    { "<leader>fk",  "<cmd>Telescope keymaps<cr>",                   desc = "Keymaps" },
+    { "<leader>fm",  "<cmd>Telescope marks<cr>",                     desc = "Marks" },
+    { "<leader>f:",  "<cmd>Telescope command_history<cr>",           desc = "Command History" },
 
     -- Git
-    { "<leader>fgc", "<cmd>Telescope git_commits<cr>", desc = "Git Commits" },
-    { "<leader>fgb", "<cmd>Telescope git_branches<cr>", desc = "Git Branches" },
-    { "<leader>fgs", "<cmd>Telescope git_status<cr>", desc = "Git Status" },
+    { "<leader>fgc", "<cmd>Telescope git_commits<cr>",               desc = "Git Commits" },
+    { "<leader>fgb", "<cmd>Telescope git_branches<cr>",              desc = "Git Branches" },
+    { "<leader>fgs", "<cmd>Telescope git_status<cr>",                desc = "Git Status" },
   },
   config = function()
     local telescope = require("telescope")
