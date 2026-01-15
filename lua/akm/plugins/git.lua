@@ -39,8 +39,10 @@ return {
         -- Actions
         map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage hunk" })
         map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset hunk" })
-        map("v", "<leader>hs", function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end, { desc = "Stage hunk" })
-        map("v", "<leader>hr", function() gs.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end, { desc = "Reset hunk" })
+        map("v", "<leader>hs", function() gs.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end,
+          { desc = "Stage hunk" })
+        map("v", "<leader>hr", function() gs.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end,
+          { desc = "Reset hunk" })
         map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
         map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
         map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
@@ -62,13 +64,13 @@ return {
     "tpope/vim-fugitive",
     cmd = { "Git", "G", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse" },
     keys = {
-      { "<leader>gs", "<cmd>Git<cr>", desc = "Git Status" },
+      { "<leader>gs", "<cmd>Git<cr>",        desc = "Git Status" },
       { "<leader>gc", "<cmd>Git commit<cr>", desc = "Git Commit" },
-      { "<leader>gp", "<cmd>Git push<cr>", desc = "Git Push" },
-      { "<leader>gP", "<cmd>Git pull<cr>", desc = "Git Pull" },
+      { "<leader>gp", "<cmd>Git push<cr>",   desc = "Git Push" },
+      { "<leader>gP", "<cmd>Git pull<cr>",   desc = "Git Pull" },
       { "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Git Diff" },
-      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git Blame" },
-      { "<leader>gl", "<cmd>Git log<cr>", desc = "Git Log" },
+      { "<leader>gb", "<cmd>Git blame<cr>",  desc = "Git Blame" },
+      { "<leader>gl", "<cmd>Git log<cr>",    desc = "Git Log" },
     },
   },
 }

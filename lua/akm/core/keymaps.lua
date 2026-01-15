@@ -22,10 +22,10 @@ keymap("n", "<C-Down>", ":resize +2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
--- Buffer navigation (Tab = next, Shift+Tab = prev, like browser)
-keymap("n", "<Tab>", ":bnext<CR>", opts)
-keymap("n", "<S-Tab>", ":bprevious<CR>", opts)
-keymap("n", "<leader>x", ":bdelete<CR>", { desc = "Close buffer" })
+-- -- Buffer navigation (Tab = next, Shift+Tab = prev, like browser)
+-- keymap("n", "<Tab>", ":bnext<CR>", opts)
+-- keymap("n", "<S-Tab>", ":bprevious<CR>", opts)
+-- keymap("n", "<leader>x", ":bdelete<CR>", { desc = "Close buffer" })
 
 -- Better indenting (stays in visual mode)
 keymap("v", "<", "<gv", opts)
@@ -112,7 +112,8 @@ keymap("n", "<leader>r", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
 -- ========================================
 
 -- Terminal toggle (Ctrl+\ like VS Code)
-keymap("n", "<C-\\>", ":terminal<CR>", { desc = "Open terminal" })
+keymap("n", "<C-\\>", "<Esc>:terminal<CR>", { desc = "Open terminal" })
+keymap("n", "<leader>tt", ":sp<Esc>:terminal<Esc>:resize -7<CR>", { desc = "Open terminal" })
 keymap("t", "<Esc>", "<C-\\><C-n>", opts) -- Exit terminal mode with Esc
 
 -- Quick save with Ctrl+S (optional, but many expect it)

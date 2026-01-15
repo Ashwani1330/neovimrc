@@ -162,16 +162,15 @@ return {
     },
   },
 
-  -- File Explorer Options: Choose ONE
+  -- FILE EXPLORERS (Both Enabled)
 
-  -- Option 1: nvim-tree
+  -- 1. NvimTree (Sidebar on the Right) - Mapped to <leader>pv
   {
     "nvim-tree/nvim-tree.lua",
     lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
-      { "<leader>pv", "<cmd>NvimTreeToggle<cr>", desc = "File Explorer" },
-      { "<leader>e",  "<cmd>NvimTreeToggle<cr>", desc = "File Explorer" },
+      { "<leader>pv", "<cmd>NvimTreeToggle<cr>", desc = "File Explorer (Tree)" },
     },
     opts = {
       sort_by = "case_sensitive",
@@ -182,21 +181,27 @@ return {
     },
   },
 
-  -- Option 2: Oil.nvim (Uncomment below to use Oil)
-  -- {
-  --   "stevearc/oil.nvim",
-  --   lazy = false,
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  --   keys = {
-  --     { "<leader>pv", "<cmd>Oil<cr>", desc = "File Explorer" },
-  --     { "<leader>e", "<cmd>Oil<cr>", desc = "File Explorer" },
-  --     { "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
-  --   },
-  --   opts = {
-  --     default_file_explorer = true,
-  --     view_options = { show_hidden = true },
-  --   },
-  -- },
+  -- 2. Oil.nvim (Buffer Editor) - Mapped to <leader>e
+  {
+    "stevearc/oil.nvim",
+    lazy = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "-",         "<cmd>Oil<cr>", desc = "Open parent directory" },
+      { "<leader>e", "<cmd>Oil<cr>", desc = "File Explorer (Oil)" },
+    },
+    opts = {
+      default_file_explorer = true,
+      view_options = {
+        show_hidden = true,
+      },
+      float = {
+        padding = 2,
+        max_width = 90,
+        max_height = 0,
+      },
+    },
+  },
 
   -- Conform.nvim
   {
@@ -229,7 +234,7 @@ return {
     },
   },
 
-  -- Trouble.nvim (Fixed formatting)
+  -- Trouble.nvim
   {
     "folke/trouble.nvim",
     cmd = { "Trouble" },

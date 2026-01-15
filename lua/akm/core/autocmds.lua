@@ -9,7 +9,7 @@ augroup("YankHighlight", { clear = true })
 autocmd("TextYankPost", {
   group = "YankHighlight",
   callback = function()
-    -- This timeout=200 creates the visual "flash" effect. It is NOT a lag.
+    -- This timeout=200 creates the visual "flash" effect.
     vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
   end,
 })
@@ -21,17 +21,6 @@ autocmd("BufWritePre", {
   pattern = "*",
   command = [[%s/\s\+$//e]],
 })
-
--- DISABLE THIS to fix the save delay!
--- Conform.nvim in editor.lua already handles formatting.
--- Using both causes a double-format and UI freeze.
--- augroup("AutoFormat", { clear = true })
--- autocmd("BufWritePre", {
---   group = "AutoFormat",
---   callback = function()
---     vim.lsp.buf.format({ async = false })
---   end,
--- })
 
 -- Close certain windows with 'q'
 augroup("QuickClose", { clear = true })

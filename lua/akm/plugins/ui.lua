@@ -2,8 +2,33 @@
 -- UI enhancements and colorscheme
 
 return {
-  -- Colorscheme - Choose one, comment others
+
   {
+    "rebelot/kanagawa.nvim",
+    name = "kanagawa",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("kanagawa").setup({
+        transparent = false,
+        theme = "dragon",
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          treesitter = true,
+          telescope = true,
+          mason = true,
+          dap = true,
+          dap_ui = true,
+        },
+      })
+      vim.cmd.colorscheme("kanagawa-dragon")
+    end,
+  },
+
+  --[[
+  {
+    -- Colorscheme - Choose one, comment others
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = false,
@@ -35,6 +60,7 @@ return {
       vim.cmd.colorscheme("catppuccin")
     end,
   },
+  ]] --
 
   -- Alternative colorschemes (uncomment to use)
   --[[

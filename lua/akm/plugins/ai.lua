@@ -1,113 +1,66 @@
 -- lua/akm/plugins/ai.lua
--- AI-powered coding assistance
+-- AI-powered coding assistance (Full Copilot Stack)
 
 return {
-  -- GitHub Copilot
+  -- 1. GITHUB COPILOT (The Engine)
+  -- Handles ghost text completions as you type
   {
     "github/copilot.vim",
     event = "InsertEnter",
     config = function()
-      -- Copilot keymaps
       vim.g.copilot_no_tab_map = true
-      vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
-        expr = true,
-        replace_keycodes = false,
-        desc = "Accept Copilot suggestion"
-      })
-      vim.keymap.set("i", "<C-H>", "<Plug>(copilot-dismiss)", { desc = "Dismiss Copilot" })
-      vim.keymap.set("i", "<C-L>", "<Plug>(copilot-next)", { desc = "Next Copilot suggestion" })
-      vim.keymap.set("i", "<C-K>", "<Plug>(copilot-previous)", { desc = "Previous Copilot suggestion" })
+      vim.g.copilot_assume_mapped = true
 
-      -- Filetypes to enable
-      vim.g.copilot_filetypes = {
-        ["*"] = true,
-        ["gitcommit"] = false,
-        ["gitrebase"] = false,
-        ["hgcommit"] = false,
-      }
+      -- Ghost Text Keymaps
+      vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")',
+        { expr = true, replace_keycodes = false, desc = "Copilot: Accept" })
+      vim.keymap.set("i", "<C-L>", "<Plug>(copilot-accept-word)", { desc = "Copilot: Accept word" })
+      vim.keymap.set("i", "<C-H>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss" })
+      vim.keymap.set("i", "<M-]>", "<Plug>(copilot-next)", { desc = "Copilot: Next suggestion" })
+      vim.keymap.set("i", "<M-[>", "<Plug>(copilot-previous)", { desc = "Copilot: Prev suggestion" })
     end,
   },
 
-  -- Alternative: Avante (Claude-powered AI assistant in Neovim)
-  -- Uncomment if you want Claude integration instead of/alongside Copilot
-  --[[
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    build = "make",
-    dependencies = {
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-    },
-    opts = {
-      provider = "claude",
-      claude = {
-        endpoint = "https://api.anthropic.com",
-        model = "claude-sonnet-4-20250514",
-        max_tokens = 8000,
-      },
-      mappings = {
-        ask = "<leader>aa",
-        edit = "<leader>ae",
-        refresh = "<leader>ar",
-        focus = "<leader>af",
-      },
-    },
-    keys = {
-      { "<leader>aa", function() require("avante").ask() end, desc = "Ask AI", mode = { "n", "v" } },
-      { "<leader>ae", function() require("avante").edit() end, desc = "Edit with AI", mode = "v" },
-      { "<leader>ar", function() require("avante").refresh() end, desc = "Refresh AI" },
-      { "<leader>at", function() require("avante").toggle() end, desc = "Toggle AI" },
-    },
-  },
-  ]]--
-
-  -- Alternative: CopilotChat for conversational AI
+  -- 2. COPILOT CHAT (The Sidebar/Agent)
+  -- Allows you to chat, ask for explanations, and fix bugs
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
     dependencies = {
-      { "github/copilot.vim" },
-      { "nvim-lua/plenary.nvim" },
+      { "github/copilot.vim" },    -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
-    cmd = {
-      "CopilotChat",
-      "CopilotChatOpen",
-      "CopilotChatToggle",
-      "CopilotChatExplain",
-      "CopilotChatReview",
-      "CopilotChatFix",
-      "CopilotChatOptimize",
-      "CopilotChatDocs",
-      "CopilotChatTests",
-    },
-    keys = {
-      { "<leader>ac", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Copilot Chat" },
-      { "<leader>ae", "<cmd>CopilotChatExplain<cr>", mode = "v", desc = "Explain code" },
-      { "<leader>ar", "<cmd>CopilotChatReview<cr>", mode = "v", desc = "Review code" },
-      { "<leader>af", "<cmd>CopilotChatFix<cr>", mode = "v", desc = "Fix code" },
-      { "<leader>ao", "<cmd>CopilotChatOptimize<cr>", mode = "v", desc = "Optimize code" },
-      { "<leader>ad", "<cmd>CopilotChatDocs<cr>", mode = "v", desc = "Generate docs" },
-      { "<leader>at", "<cmd>CopilotChatTests<cr>", mode = "v", desc = "Generate tests" },
-    },
+    build = "make tiktoken",       -- Only on MacOS or Linux
     opts = {
       debug = false,
-      show_help = "yes",
-      prompts = {
-        Explain = "Explain how this code works.",
-        Review = "Review this code and suggest improvements.",
-        Tests = "Write tests for this code.",
-        Refactor = "Refactor this code to improve its clarity and readability.",
-        FixCode = "Fix the bugs in this code.",
-        BetterNamings = "Provide better names for variables and functions.",
-        Documentation = "Write documentation for this code.",
-        SwaggerApiDocs = "Write Swagger API documentation.",
-        SwaggerJsDocs = "Write Swagger JSDoc comments.",
-      },
+
+      -- Window configuration (Floating or Sidebar)
       window = {
-        layout = "float",
-        width = 0.8,
-        height = 0.8,
+        layout = "vertical", -- 'vertical', 'horizontal', 'float', 'replace'
+        width = 0.3,         -- fractional width of parent, or absolute width in columns
+        height = 0.5,        -- fractional height of parent, or absolute height in rows
+        -- Options: 'split', 'float', 'tab'
+        relative = "editor",
+        border = "rounded",
+      },
+    },
+    keys = {
+      -- Chat Keymaps
+      { "<leader>aa", ":CopilotChatToggle<CR>",  desc = "Copilot: Toggle Chat" },
+      { "<leader>ae", ":CopilotChatExplain<CR>", desc = "Copilot: Explain Code",   mode = "v" },
+      { "<leader>af", ":CopilotChatFix<CR>",     desc = "Copilot: Fix Bug",        mode = "v" },
+      { "<leader>at", ":CopilotChatTests<CR>",   desc = "Copilot: Generate Tests", mode = "v" },
+
+      -- Quick Chat (Ask a one-off question)
+      {
+        "<leader>aq",
+        function()
+          local input = vim.fn.input("Quick Chat: ")
+          if input ~= "" then
+            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+          end
+        end,
+        desc = "Copilot: Quick Chat",
       },
     },
   },

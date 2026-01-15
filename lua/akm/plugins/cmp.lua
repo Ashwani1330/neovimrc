@@ -5,13 +5,13 @@ return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
   dependencies = {
-    "L3MON4D3/LuaSnip",         -- Snippet engine (load first)
-    "saadparwaiz1/cmp_luasnip", -- Snippet completion
+    "L3MON4D3/LuaSnip",             -- Snippet engine (load first)
+    "saadparwaiz1/cmp_luasnip",     -- Snippet completion
     "rafamadriz/friendly-snippets", -- Snippet collection
-    "hrsh7th/cmp-nvim-lsp",     -- LSP completion
-    "hrsh7th/cmp-buffer",       -- Buffer completion
-    "hrsh7th/cmp-path",         -- Path completion
-    "onsails/lspkind.nvim",     -- VS Code-like pictograms
+    "hrsh7th/cmp-nvim-lsp",         -- LSP completion
+    "hrsh7th/cmp-buffer",           -- Buffer completion
+    "hrsh7th/cmp-path",             -- Path completion
+    "onsails/lspkind.nvim",         -- VS Code-like pictograms
   },
   config = function()
     local cmp = require("cmp")
@@ -62,9 +62,9 @@ return {
       -- Sources priority order
       sources = cmp.config.sources({
         { name = "nvim_lsp", priority = 1000 },
-        { name = "luasnip", priority = 750 },
-        { name = "buffer", priority = 500 },
-        { name = "path", priority = 250 },
+        { name = "luasnip",  priority = 750 },
+        { name = "buffer",   priority = 500 },
+        { name = "path",     priority = 250 },
       }),
 
       -- VS Code-like appearance
@@ -84,8 +84,14 @@ return {
 
       -- Window styling
       window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered({
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+        }),
+        documentation = cmp.config.window.bordered({
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+        }),
       },
 
       -- Experimental features
