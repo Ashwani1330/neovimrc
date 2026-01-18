@@ -25,7 +25,7 @@ return {
   -- Allows you to chat, ask for explanations, and fix bugs
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       { "github/copilot.vim" },    -- or zbirenbaum/copilot.lua
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
@@ -46,7 +46,16 @@ return {
     },
     keys = {
       -- Chat Keymaps
-      { "<leader>aa", ":CopilotChatToggle<CR>",  desc = "Copilot: Toggle Chat" },
+      {
+        "<leader>aa",
+        function()
+          local original_splitright = vim.o.splitright
+          vim.o.splitright = false
+          vim.cmd.CopilotChatToggle()
+          vim.o.splitright = original_splitright
+        end,
+        desc = "Copilot: Toggle Chat",
+      },
       { "<leader>ae", ":CopilotChatExplain<CR>", desc = "Copilot: Explain Code",   mode = "v" },
       { "<leader>af", ":CopilotChatFix<CR>",     desc = "Copilot: Fix Bug",        mode = "v" },
       { "<leader>at", ":CopilotChatTests<CR>",   desc = "Copilot: Generate Tests", mode = "v" },

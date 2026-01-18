@@ -231,6 +231,11 @@ return {
         timeout_ms = 500,
         lsp_fallback = true,
       },
+      formatters = {
+        clang_format = {
+          prepend_args = { "--style={IndentWidth=4}" },
+        },
+      },
     },
   },
 

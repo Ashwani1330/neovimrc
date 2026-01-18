@@ -13,6 +13,7 @@ opt.showmode = false      -- Don't show mode (statusline handles it)
 opt.wrap = false          -- No line wrap
 opt.splitright = true     -- Vertical splits go right
 opt.splitbelow = true     -- Horizontal splits go below
+opt.guicursor = ""        -- Block cursor
 
 -- Editor Behavior
 opt.mouse = "a"               -- Enable mouse
