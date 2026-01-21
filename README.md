@@ -58,59 +58,87 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 
 ---
 
-## ⌨️ Essential Keybindings
+## ⌨️ Keybindings
 
 **Leader Key:** `Space`
+
+<details>
+<summary><strong>CLICK TO VIEW ALL KEYBINDINGS</strong></summary>
 
 ### 📂 File & Window Management
 
 | Key | Action |
 | --- | --- |
-| `<leader>e` / `-` | Open File Explorer (Oil.nvim) |
-| `<leader>pv` | Toggle Sidebar Explorer (NvimTree) |
-| `<leader>ff` | Find Files (Telescope) |
-| `<leader>fg` | Live Grep (Search text in files) |
-| `<leader>fb` | Switch Buffers |
-| `Ctrl+h/j/k/l` | Navigate between windows |
-| `Ctrl+arrows` | Resize windows |
-| `<leader>w` | Save file |
+| `<leader>pv` | Toggle File Explorer (NvimTree) |
+| `<leader>e` / `-` | Edit Parent Directory (Oil.nvim) |
+| `<leader>w` | Save File |
 | `<leader>q` | Quit |
 | `<leader>Q` | Force Quit All |
+| `Ctrl+h/j/k/l` | Navigate between splits |
+| `Ctrl+Arrows` | Resize splits |
 | `<C-\>` | Toggle Terminal |
+| `<leader>fb` | Switch Buffers (Telescope) |
 
 ### 🧠 LSP (Code Intelligence)
 
 | Key | Action |
 | --- | --- |
 | `gd` | Go to Definition |
-| `<leader>vrr` | Find References |
 | `K` | Hover Documentation |
+| `<leader>vrr` | Find References |
 | `<leader>vca` | Code Action |
 | `<leader>vrn` | Rename Symbol |
 | `<leader>vd` | Show Diagnostics (Float) |
 | `<leader>vws` | Workspace Symbols |
-| `<leader>f` | Format File |
 | `[d` / `]d` | Previous / Next Diagnostic |
+| `<leader>f` | Format File |
 
-### 🤖 AI Assistance (Copilot)
+### 🔍 Telescope (Search)
 
-**Ghost Text (Completions):**
 | Key | Action |
 | --- | --- |
+| `<leader>ff` | Find Files |
+| `<leader>fg` | Live Grep (Search text) |
+| `<leader>fr` | Recent Files |
+| `<leader>fw` | Grep String (Word under cursor) |
+| `<leader>fc` | Fuzzy find in current buffer |
+| `<leader>fs` | Document Symbols |
+| `<leader>px` | Project/Telescope Commands |
+| `<leader>fh` | Help Tags |
+| `<leader>fk` | Keymaps |
+
+### 🤖 AI (Copilot)
+
+| Key | Action |
+| --- | --- |
+| **Ghost Text** |  |
 | `Ctrl+J` | Accept Suggestion |
 | `Ctrl+L` | Accept Next Word |
 | `Ctrl+H` | Dismiss Suggestion |
 | `Alt+]` | Next Suggestion |
 | `Alt+[` | Previous Suggestion |
+| **Chat Agent** |  |
+| `<leader>aa` | Toggle Chat Sidebar |
+| `<leader>aq` | Quick Chat Input |
+| `<leader>ae` | Explain Code (Visual) |
+| `<leader>af` | Fix Bug (Visual) |
+| `<leader>at` | Generate Tests (Visual) |
 
-**Chat & Agent:**
+### 🌲 Git (Fugitive & Gitsigns)
+
 | Key | Action |
 | --- | --- |
-| `<leader>aa` | Toggle Copilot Chat Sidebar |
-| `<leader>aq` | Quick Chat (Input window) |
-| `<leader>ae` | Explain Code (Visual Mode) |
-| `<leader>af` | Fix Bug (Visual Mode) |
-| `<leader>at` | Generate Tests (Visual Mode) |
+| `<leader>gs` | Git Status |
+| `<leader>gc` | Git Commit |
+| `<leader>gp` | Git Push |
+| `<leader>gP` | Git Pull |
+| `<leader>gd` | Git Diff |
+| `<leader>gl` | Git Log |
+| `]c` / `[c` | Next / Previous Hunk |
+| `<leader>hs` | Stage Hunk |
+| `<leader>hr` | Reset Hunk |
+| `<leader>hp` | Preview Hunk |
+| `<leader>tb` | Toggle Blame Ghost Text |
 
 ### 🐛 Debugging (DAP)
 
@@ -124,47 +152,19 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `<leader>dB` | Conditional Breakpoint |
 | `<leader>du` | Toggle Debug UI |
 | `<leader>dr` | Open REPL |
-| `<leader>dl` | Run Last |
 | `<leader>dt` | Terminate |
 
-### 🌲 Git
-
-**Fugitive:**
-| Key | Action |
-| --- | --- |
-| `<leader>gs` | Git Status |
-| `<leader>gc` | Git Commit |
-| `<leader>gp` | Git Push |
-| `<leader>gP` | Git Pull |
-| `<leader>gd` | Git Diff |
-| `<leader>gl` | Git Log |
-
-**Gitsigns:**
-| Key | Action |
-| --- | --- |
-| `]c` / `[c` | Next / Previous Hunk |
-| `<leader>hs` | Stage Hunk |
-| `<leader>hr` | Reset Hunk |
-| `<leader>hS` | Stage Buffer |
-| `<leader>hR` | Reset Buffer |
-| `<leader>hp` | Preview Hunk |
-| `<leader>hb` | Blame Line |
-| `<leader>tb` | Toggle Blame Ghost Text |
-
-### 🔭 Telescope & Tools
+### 🛠️ Utility & Extra
 
 | Key | Action |
 | --- | --- |
-| `<leader>px` | Open Telescope Command Palette |
-| `<leader>fr` | Recent Files |
-| `<leader>fw` | Find Word (Grep String) |
-| `<leader>fc` | Fuzzy Find in Current Buffer |
-| `<leader>fs` | Document Symbols |
-| `<leader>fgc` | Git Commits |
-| `<leader>fgb` | Git Branches |
-| `<leader>fgs` | Git Status |
 | `<leader>u` | Toggle UndoTree |
 | `<leader>xx` | Toggle Trouble (Diagnostics) |
+| `<leader>h` | Clear Search Highlight |
+| `<leader>r` | Replace word under cursor |
+| `Alt+j/k` | Move lines up/down |
+
+</details>
 
 ---
 
