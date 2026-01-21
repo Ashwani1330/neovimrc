@@ -5,6 +5,10 @@ A blazing fast, fully-featured Neovim configuration built for Linux and macOS. I
 > [!IMPORTANT]
 > **🪟 Windows Users:** Please check the [windows branch](https://github.com/ashwani1330/neovimrc/tree/windows) for a configuration optimized for PowerShell and Windows build tools.
 
+## Screenshot
+<img width="1916" height="1065" alt="image" src="https://github.com/user-attachments/assets/da42680f-f1ba-4545-9dc8-75ba9b34af0f" />
+
+
 ## 📋 Requirements
 
 Ensure your system has the necessary build tools and runtimes.
