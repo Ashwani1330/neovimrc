@@ -8,10 +8,20 @@ return {
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      -- "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = function()
-      require("nvim-treesitter.configs").setup({
+      -- 1. SAFETY CHECK: Try to load the module safely.
+      -- This prevents the "module not found" crash if the plugin is still downloading.
+      local status, configs = pcall(require, "nvim-treesitter.configs")
+
+      -- 2. If it fails (plugin not installed yet), stop here silently.
+      if not status then
+        return
+      end
+
+      -- 3. If successful, run the setup as normal.
+      configs.setup({
         ensure_installed = {
           "lua", "vim", "vimdoc", "query",
           "python", "javascript", "typescript",
