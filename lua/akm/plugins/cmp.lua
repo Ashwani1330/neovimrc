@@ -3,7 +3,7 @@
 
 return {
   "hrsh7th/nvim-cmp",
-  event = "InsertEnter",
+  event = { "InsertEnter", "CmdlineEnter" },
   dependencies = {
     "L3MON4D3/LuaSnip",             -- Snippet engine (load first)
     "saadparwaiz1/cmp_luasnip",     -- Snippet completion
@@ -11,6 +11,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",         -- LSP completion
     "hrsh7th/cmp-buffer",           -- Buffer completion
     "hrsh7th/cmp-path",             -- Path completion
+    "hrsh7th/cmp-cmdline",          -- Command-line completion
     "onsails/lspkind.nvim",         -- VS Code-like pictograms
   },
   config = function()
