@@ -6,7 +6,8 @@ return {
   -- Handles ghost text completions as you type
   {
     "github/copilot.vim",
-    event = "InsertEnter",
+    cmd = "Copilot",
+    event = { "InsertEnter", "CmdlineEnter" },
     config = function()
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
