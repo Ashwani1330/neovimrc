@@ -25,7 +25,7 @@ return {
     dependencies = { "mason.nvim" },
     opts = {
       ensure_installed = {
-        "lua_ls", "pyright", "ts_ls", "rust_analyzer", "clangd",
+        "lua_ls", "rust_analyzer", "clangd",
       },
       automatic_installation = true,
     },

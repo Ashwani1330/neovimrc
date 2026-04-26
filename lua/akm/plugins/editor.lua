@@ -5,6 +5,7 @@ return {
   -- Treesitter - Better syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
@@ -88,7 +89,7 @@ return {
     },
   },
 
-  -- Comment.nvim
+-- Comment.nvim
   {
     "numToStr/Comment.nvim",
     event = { "BufReadPost", "BufNewFile" },
@@ -96,6 +97,12 @@ return {
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
+      -- 1. Setup the context-commentstring plugin FIRST and disable the buggy autocmd
+      require('ts_context_commentstring').setup {
+        enable_autocmd = false,
+      }
+
+      -- 2. Setup Comment.nvim with the integration hook
       require("Comment").setup({
         pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
       })
@@ -203,7 +210,7 @@ return {
     },
   },
 
-  -- Conform.nvim
+  --[[ -- Conform.nvim
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -237,7 +244,7 @@ return {
         },
       },
     },
-  },
+  }, ]]
 
   -- Trouble.nvim
   {

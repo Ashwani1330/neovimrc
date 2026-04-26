@@ -80,7 +80,7 @@ autocmd("FileType", {
 -- Enable spell check for certain files
 autocmd("FileType", {
   group = "FileTypeSettings",
-  pattern = { "gitcommit", "markdown", "text" },
+  pattern = { "gitcommit" },
   callback = function()
     vim.opt_local.spell = true
     vim.opt_local.spelllang = "en_us"
