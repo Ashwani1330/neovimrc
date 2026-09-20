@@ -1,42 +1,27 @@
 <div align="center">
-  <img src="assets/readme/retro-coder.gif" width="500" alt="Late-90s cyber anime character using a computer" />
-
   <pre>
-╔══════════════════════════════════════════╗
-║  N E O V I M // P E R S O N A L   R C  ║
-╚══════════════════════════════════════════╝
+┌───────────────────────────┐
+│  n e o v i m . r c  /  9x │
+└───────────────────────────┘
   </pre>
 
-  <p><code>FAST EDITS · SMART TOOLS · LATE-NIGHT GLOW</code></p>
+  <p>A small, fast Neovim setup for late-night coding.</p>
 
-  <p>
-    <img src="https://img.shields.io/badge/SYSTEM-NEOVIM_0.12+-00ff66?style=plastic&labelColor=111111" alt="Neovim 0.12+" />
-    <img src="https://img.shields.io/badge/CONFIG-LUA-b18cff?style=plastic&labelColor=111111" alt="Lua configuration" />
-    <img src="https://img.shields.io/badge/STATUS-ONLINE-00ccff?style=plastic&labelColor=111111" alt="Status online" />
-  </p>
-
-  <p>
-    <a href="#installation">[ BOOT ]</a>　
-    <a href="#features">[ MODULES ]</a>　
-    <a href="#keybindings">[ KEY MAP ]</a>　
-    <a href="#troubleshooting">[ HELP ]</a>
-  </p>
-
-  <sub>animation via <a href="https://giphy.com/gifs/udK21RQeWtaGQ">GIPHY</a></sub>
+  <code>lua · neovim 0.12+ · meowsoot night</code>
+  <br><br>
+  <a href="#installation">install</a> ·
+  <a href="#keybindings">keys</a> ·
+  <a href="#features">plugins</a> ·
+  <a href="#troubleshooting">help</a>
 </div>
 
-> [!IMPORTANT]
-> `SYSTEM REQUIREMENT:` **Neovim 0.12+** and **tree-sitter-cli 0.26.1+**. Windows users should boot the dedicated [windows branch](https://github.com/ashwani1330/neovimrc/tree/windows).
+![Neovim running with Codex, completion, and the file tree](assets/readme/neovim.png)
 
-<details>
-<summary><strong>[ SCREEN CAPTURE ] See the editor</strong></summary>
-<br>
-<img width="1916" height="1065" alt="Neovim configuration preview" src="https://github.com/user-attachments/assets/da42680f-f1ba-4545-9dc8-75ba9b34af0f" />
-</details>
+> Requires **Neovim 0.12+** and **tree-sitter-cli 0.26.1+**. On Windows, use the [windows branch](https://github.com/ashwani1330/neovimrc/tree/windows).
 
 <a id="installation"></a>
 
-## `01 // BOOT SEQUENCE`
+## `01 / install`
 
 ```bash
 mv ~/.config/nvim ~/.config/nvim.bak
@@ -48,7 +33,7 @@ nvim
 On first launch, `lazy.nvim` installs the plugins and Treesitter parsers. Run `:checkhealth` when it finishes.
 
 <details>
-<summary><strong>[ HARDWARE / SOFTWARE CHECK ]</strong></summary>
+<summary>system dependencies</summary>
 
 Alongside Neovim, install a C compiler, `git`, `ripgrep`, `fd`, `curl`, `tar`, and the Treesitter CLI from your package manager or an official release binary—not npm.
 
@@ -73,14 +58,14 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 
 <a id="keybindings"></a>
 
-## `02 // KEY MAP`
+## `02 / keys`
 
-**Leader Key:** `Space`
+Leader: `Space`
 
 <details>
-<summary><strong>[ OPEN KEY DATABASE ]</strong></summary>
+<summary>show keymaps</summary>
 
-### `[ FILES / WINDOWS ]`
+### files / windows
 
 | Key | Action |
 | --- | --- |
@@ -94,7 +79,7 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 | `<C-\>` | Toggle Terminal |
 | `<leader>fb` | Switch Buffers (Telescope) |
 
-### `[ LSP / CODE INTELLIGENCE ]`
+### lsp / code
 
 | Key | Action |
 | --- | --- |
@@ -108,7 +93,7 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 | `[d` / `]d` | Previous / Next Diagnostic |
 | `<leader>f` | Format File |
 
-### `[ SEARCH / TELESCOPE ]`
+### search / telescope
 
 | Key | Action |
 | --- | --- |
@@ -122,7 +107,7 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 | `<leader>fh` | Help Tags |
 | `<leader>fk` | Keymaps |
 
-### `[ AI / COPILOT ]`
+### ai / copilot
 
 | Key | Action |
 | --- | --- |
@@ -139,7 +124,7 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 | `<leader>af` | Fix Bug (Visual) |
 | `<leader>at` | Generate Tests (Visual) |
 
-### `[ GIT / FUGITIVE + GITSIGNS ]`
+### git / fugitive + gitsigns
 
 | Key | Action |
 | --- | --- |
@@ -155,7 +140,7 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 | `<leader>hp` | Preview Hunk |
 | `<leader>tb` | Toggle Blame Ghost Text |
 
-### `[ DEBUG / DAP ]`
+### debug / dap
 
 | Key | Action |
 | --- | --- |
@@ -169,7 +154,7 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 | `<leader>dr` | Open REPL |
 | `<leader>dt` | Terminate |
 
-### `[ UTILITY / EXTRA ]`
+### utility
 
 | Key | Action |
 | --- | --- |
@@ -188,51 +173,50 @@ Mason also needs Node.js for JavaScript-based language servers, Python for `debu
 
 <a id="features"></a>
 
-## `03 // LOADED MODULES`
+## `03 / plugins`
 
-| ID | Module | Provides |
-| :---: | --- | --- |
-| `LSP` | **Language intelligence** | Native LSP, Mason, nvim-cmp, LuaSnip |
-| `TS` | **Syntax & structure** | Treesitter highlighting, folding, selection, and textobjects |
-| `NAV` | **Navigation** | Telescope search, Oil buffers, and NvimTree sidebar |
-| `AI` | **Pair programming** | Copilot ghost text and CopilotChat workflows |
-| `DAP` | **Debugging** | Python, Rust, C, and C++ adapters |
-| `GIT` | **Version control** | Gitsigns feedback and Fugitive commands |
-| `TXT` | **Writing** | Rendered Markdown, LaTeX text, and CSV alignment |
-| `UI` | **Interface** | Meowsoot night, Lualine, rounded windows, and native UI polish |
+| Area | Includes |
+| --- | --- |
+| Code | Native LSP, Mason, nvim-cmp, LuaSnip, Treesitter |
+| Find | Telescope, Oil, NvimTree |
+| AI | Copilot suggestions and chat |
+| Debug | Python, Rust, C, and C++ adapters |
+| Git | Gitsigns and Fugitive |
+| Writing | Rendered Markdown, LaTeX, and CSV alignment |
+| UI | Meowsoot night, Lualine, and rounded windows |
 
 ---
 
 <a id="troubleshooting"></a>
 
-## `04 // TROUBLESHOOTING`
+## `04 / help`
 
 <details>
-<summary><strong>[ ERR:BUILD ] Telescope FZF is missing</strong></summary>
+<summary>Telescope FZF is missing</summary>
 
 Install `make` and a C compiler, then run `:Lazy build telescope-fzf-native.nvim`.
 </details>
 
 <details>
-<summary><strong>[ ERR:PARSE ] Treesitter highlighting is missing</strong></summary>
+<summary>Treesitter highlighting is missing</summary>
 
 Confirm `tree-sitter --version` is 0.26.1 or newer, then run `:Lazy build nvim-treesitter`.
 </details>
 
 <details>
-<summary><strong>[ ERR:GLYPH ] Icons look wrong</strong></summary>
+<summary>Icons look wrong</summary>
 
 Use a patched [Nerd Font](https://www.nerdfonts.com/) in your terminal.
 </details>
 
 <details>
-<summary><strong>[ ERR:MARKUP ] Markdown or LaTeX does not render</strong></summary>
+<summary>Markdown or LaTeX does not render</summary>
 
 Install the `markdown`, `markdown_inline`, and `latex` parsers. For math conversion, run `uv tool install pylatexenc` and keep `~/.local/bin` on your `PATH`. Try the [Markdown preview](docs/markdown-preview.md) and toggle rendering with `<leader>um`.
 </details>
 
 <details>
-<summary><strong>[ ERR:TOOLS ] Language servers or Python debugging are unavailable</strong></summary>
+<summary>Language servers or Python debugging are unavailable</summary>
 
 Inspect tools with `:Mason` and active clients with `:checkhealth vim.lsp`. Python debugging uses Mason's `debugpy` adapter and the active project interpreter.
 </details>
@@ -240,5 +224,6 @@ Inspect tools with `:Mason` and active clients with `:checkhealth vim.lsp`. Pyth
 ---
 
 <div align="center">
-  <pre>-- EOF --  best viewed in a terminal after midnight  -- EOF --</pre>
+  <pre>-- eof · see you after midnight --</pre>
+  <img src="assets/readme/retro-coder.gif" width="420" alt="Retro coder at a computer" />
 </div>
