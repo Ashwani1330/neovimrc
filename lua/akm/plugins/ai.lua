@@ -8,15 +8,15 @@ return {
     "github/copilot.vim",
     cmd = "Copilot",
     event = { "InsertEnter", "CmdlineEnter" },
-    config = function()
+    init = function()
       vim.g.copilot_no_tab_map = true
-      vim.g.copilot_assume_mapped = true
-
+    end,
+    config = function()
       -- Ghost Text Keymaps
-      vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")',
+      vim.keymap.set("i", "<M-CR>", 'copilot#Accept("\\<CR>")',
         { expr = true, replace_keycodes = false, desc = "Copilot: Accept" })
-      vim.keymap.set("i", "<C-L>", "<Plug>(copilot-accept-word)", { desc = "Copilot: Accept word" })
-      vim.keymap.set("i", "<C-H>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss" })
+      vim.keymap.set("i", "<M-l>", "<Plug>(copilot-accept-word)", { desc = "Copilot: Accept word" })
+      vim.keymap.set("i", "<M-Backspace>", "<Plug>(copilot-dismiss)", { desc = "Copilot: Dismiss" })
       vim.keymap.set("i", "<M-]>", "<Plug>(copilot-next)", { desc = "Copilot: Next suggestion" })
       vim.keymap.set("i", "<M-[>", "<Plug>(copilot-previous)", { desc = "Copilot: Prev suggestion" })
     end,
@@ -67,7 +67,7 @@ return {
         function()
           local input = vim.fn.input("Quick Chat: ")
           if input ~= "" then
-            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+            require("CopilotChat").ask(input .. "\n#buffer:active")
           end
         end,
         desc = "Copilot: Quick Chat",

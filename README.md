@@ -11,7 +11,7 @@ A blazing fast, fully-featured Neovim configuration built for Linux and macOS. I
 
 ## 📋 Requirements
 
-Ensure your system has the necessary build tools and runtimes.
+This configuration targets **Neovim 0.12+** and requires **tree-sitter-cli 0.26.1+**, a C compiler, `curl`, and `tar`. Install the CLI using your package manager or an official Treesitter release binary, rather than npm. Distribution packages for Neovim may be older than this requirement.
 
 ### 1. Install Neovim & Tools
 
@@ -32,20 +32,20 @@ sudo dnf install neovim gcc make ripgrep fd-find git
 **Arch Linux:**
 
 ```bash
-sudo pacman -S neovim base-devel ripgrep fd git
+sudo pacman -S neovim base-devel ripgrep fd git tree-sitter
 
 ```
 
 **macOS (Homebrew):**
 
 ```bash
-brew install neovim ripgrep fd gcc
+brew install neovim ripgrep fd gcc tree-sitter
 
 ```
 
 ### 2. Install Language Runtimes
 
-For [Mason.nvim](https://github.com/williamboman/mason.nvim) to install language servers (LSP) and formatters, you need:
+For [Mason.nvim](https://github.com/mason-org/mason.nvim) to install language servers (LSP) and formatters, you need:
 
 * **Node.js** (npm): Required for `pyright`, `ts_ls`, `bashls`, etc.
 * **Python**: Required for `debugpy` and Python tooling.
@@ -66,7 +66,7 @@ mv ~/.local/share/nvim ~/.local/share/nvim.bak
 ### 2. Clone the repository
 
 ```bash
-git clone [https://github.com/ashwani1330/neovimrc.git](https://github.com/ashwani1330/neovimrc.git) ~/.config/nvim
+git clone https://github.com/ashwani1330/neovimrc.git ~/.config/nvim
 
 ```
 
@@ -74,7 +74,7 @@ git clone [https://github.com/ashwani1330/neovimrc.git](https://github.com/ashwa
 
 Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and install all plugins.
 
-* Wait for the dashboard to appear.
+* Wait for plugin and parser installation to finish.
 * Run `:checkhealth` to verify everything is green.
 
 ---
@@ -133,9 +133,9 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | Key | Action |
 | --- | --- |
 | **Ghost Text** |  |
-| `Ctrl+J` | Accept Suggestion |
-| `Ctrl+L` | Accept Next Word |
-| `Ctrl+H` | Dismiss Suggestion |
+| `Alt+Enter` | Accept Suggestion |
+| `Alt+l` | Accept Next Word |
+| `Alt+Backspace` | Dismiss Suggestion |
 | `Alt+]` | Next Suggestion |
 | `Alt+[` | Previous Suggestion |
 | **Chat Agent** |  |
@@ -180,6 +180,9 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | Key | Action |
 | --- | --- |
 | `<leader>u` | Toggle UndoTree |
+| `<leader>um` | Toggle Markdown rendering |
+| `Ctrl+Space` (normal / visual) | Expand Treesitter selection |
+| `Backspace` (visual) | Shrink Treesitter selection |
 | `<leader>xx` | Toggle Trouble (Diagnostics) |
 | `<leader>h` | Clear Search Highlight |
 | `<leader>r` | Replace word under cursor |
@@ -194,7 +197,10 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 * **Plugin Manager:** [lazy.nvim](https://github.com/folke/lazy.nvim)
 * **LSP:** Mason, Mason-LSPConfig, nvim-lspconfig
 * **Completion:** nvim-cmp, LuaSnip
-* **Formatting:** Conform.nvim
+* **Syntax:** nvim-treesitter and textobjects, both on `main`, with native Neovim highlighting and folding
+* **Markdown:** render-markdown.nvim; normal mode renders, insert mode shows source
+* **Theme:** Meowsoot night with its matching Lualine theme
+* **Formatting:** Language server formatting (`<leader>f`); Conform.nvim is an optional commented configuration
 * **Explorer:** Oil.nvim (Buffer-like file editing) & Nvim-Tree
 * **Fuzzy Finder:** Telescope.nvim (with fzf-native for speed)
 * **Git:** Gitsigns & Fugitive
@@ -214,12 +220,19 @@ Ensure you have `make` and `gcc` installed (see Requirements). Then run:
 ```
 
 **2. Treesitter errors on startup**
-If syntax highlighting is missing, run:
+Ensure `tree-sitter --version` reports 0.26.1 or newer. If syntax highlighting is missing, install missing parsers and update existing ones:
 
 ```vim
-:TSUpdate
+:Lazy build nvim-treesitter
 
 ```
 
 **3. Icons are missing or look weird**
 Make sure you are using a [Nerd Font](https://www.nerdfonts.com/) in your terminal.
+
+
+**4. Markdown rendering**
+The `markdown` and `markdown_inline` parsers must both be installed. LaTeX math additionally uses the `latex` parser and `latex2text` converter (`uv tool install pylatexenc`). Keep `~/.local/bin` on your PATH. Open [the Markdown preview](docs/markdown-preview.md) to try headings, tables, code, and math. Rendering and syntax highlighting work together; use `:RenderMarkdown toggle` or `<leader>um` to switch rendering. Markdown uses built-in list indentation and preserves trailing spaces on save, since two spaces encode a hard line break.
+
+**5. Language servers and Python debugging**
+Mason installs `lua_ls`, `pyright`, `ts_ls`, `rust_analyzer`, and `clangd`. Inspect installation status using `:Mason` and active clients using `:checkhealth vim.lsp`. Python debugging uses Mason's debugpy environment for the adapter and the project's Python environment for the program.

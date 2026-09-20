@@ -10,7 +10,7 @@ autocmd("TextYankPost", {
   group = "YankHighlight",
   callback = function()
     -- This timeout=200 creates the visual "flash" effect.
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
+    vim.hl.on_yank({ higroup = "IncSearch", timeout = 200 })
   end,
 })
 
@@ -19,7 +19,16 @@ augroup("TrimWhitespace", { clear = true })
 autocmd("BufWritePre", {
   group = "TrimWhitespace",
   pattern = "*",
-  command = [[%s/\s\+$//e]],
+  callback = function(event)
+    -- Two trailing spaces are meaningful hard line breaks in Markdown.
+    if vim.bo[event.buf].buftype ~= "" or not vim.bo[event.buf].modifiable
+      or vim.bo[event.buf].filetype == "markdown" then
+      return
+    end
+    local view = vim.fn.winsaveview()
+    vim.cmd([[keepjumps keeppatterns %s/\s\+$//e]])
+    vim.fn.winrestview(view)
+  end,
 })
 
 -- Close certain windows with 'q'
@@ -51,7 +60,10 @@ augroup("AutoMkdir", { clear = true })
 autocmd("BufWritePre", {
   group = "AutoMkdir",
   callback = function(event)
-    local file = vim.loop.fs_realpath(event.match) or event.match
+    if vim.bo[event.buf].buftype ~= "" or event.match:match("^%w+://") then
+      return
+    end
+    local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
@@ -78,6 +90,16 @@ autocmd("FileType", {
 })
 
 -- Enable spell check for certain files
+autocmd("FileType", {
+  group = "FileTypeSettings",
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.breakindent = true
+  end,
+})
+
 autocmd("FileType", {
   group = "FileTypeSettings",
   pattern = { "gitcommit" },

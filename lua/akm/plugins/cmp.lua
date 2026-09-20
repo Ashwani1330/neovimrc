@@ -5,7 +5,7 @@ return {
   "hrsh7th/nvim-cmp",
   event = { "InsertEnter", "CmdlineEnter" },
   dependencies = {
-    "L3MON4D3/LuaSnip",             -- Snippet engine (load first)
+    { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
     "saadparwaiz1/cmp_luasnip",     -- Snippet completion
     "rafamadriz/friendly-snippets", -- Snippet collection
     "hrsh7th/cmp-nvim-lsp",         -- LSP completion
@@ -97,7 +97,7 @@ return {
 
       -- Experimental features
       experimental = {
-        ghost_text = true, -- Show suggestion as ghost text
+        ghost_text = false, -- Copilot owns inline suggestions
       },
     })
 

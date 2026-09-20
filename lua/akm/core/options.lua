@@ -14,6 +14,7 @@ opt.wrap = false          -- No line wrap
 opt.splitright = true     -- Vertical splits go right
 opt.splitbelow = true     -- Horizontal splits go below
 opt.guicursor = ""        -- Block cursor
+opt.winborder = "rounded"
 
 -- Editor Behavior
 opt.mouse = "a"               -- Enable mouse
@@ -51,7 +52,7 @@ opt.sidescrolloff = 8 -- Columns to keep left/right of cursor
 
 -- Folding (using treesitter)
 opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldenable = false -- Don't fold by default
 
 -- Neovim-specific

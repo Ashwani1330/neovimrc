@@ -2,67 +2,47 @@
 -- Core editor enhancement plugins
 
 return {
-  -- Treesitter - Better syntax highlighting
+  -- Treesitter: the main branch supports Neovim 0.12's native APIs.
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
+    branch = "main",
+    lazy = false,
+    build = function()
+      require("nvim-treesitter").update():wait(300000)
+      require("nvim-treesitter").install(require("akm.core.treesitter").languages):wait(300000)
+    end,
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "lua", "vim", "vimdoc", "query",
-          "python", "javascript", "typescript",
-          "rust", "go", "c", "cpp",
-          "html", "css", "json", "yaml",
-          "markdown", "markdown_inline",
-          "bash", "regex",
-        },
-        auto_install = true,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-        indent = { enable = true },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
-            scope_incremental = false,
-            node_decremental = "<bs>",
-          },
-        },
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-              ["aa"] = "@parameter.outer",
-              ["ia"] = "@parameter.inner",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-              ["]f"] = "@function.outer",
-              ["]c"] = "@class.outer",
-            },
-            goto_previous_start = {
-              ["[f"] = "@function.outer",
-              ["[c"] = "@class.outer",
-            },
-          },
-        },
+      require("akm.core.treesitter").setup()
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    lazy = false,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("nvim-treesitter-textobjects").setup({
+        select = { lookahead = true },
+        move = { set_jumps = true },
       })
+      local objects = {
+        af = "@function.outer", ["if"] = "@function.inner",
+        ac = "@class.outer", ic = "@class.inner",
+        aa = "@parameter.outer", ia = "@parameter.inner",
+      }
+      for key, capture in pairs(objects) do
+        vim.keymap.set({ "x", "o" }, key, function()
+          require("nvim-treesitter-textobjects.select").select_textobject(capture, "textobjects")
+        end, { desc = "Select " .. capture })
+      end
+      for key, capture in pairs({ f = "@function.outer", c = "@class.outer" }) do
+        vim.keymap.set({ "n", "x", "o" }, "]" .. key, function()
+          require("nvim-treesitter-textobjects.move").goto_next_start(capture, "textobjects")
+        end, { desc = "Next " .. capture })
+        vim.keymap.set({ "n", "x", "o" }, "[" .. key, function()
+          require("nvim-treesitter-textobjects.move").goto_previous_start(capture, "textobjects")
+        end, { desc = "Previous " .. capture })
+      end
     end,
   },
 
@@ -180,7 +160,8 @@ return {
       { "<leader>pv", "<cmd>NvimTreeToggle<cr>", desc = "File Explorer (Tree)" },
     },
     opts = {
-      sort_by = "case_sensitive",
+      sort = { sorter = "case_sensitive" },
+      hijack_directories = { enable = false }, -- Oil handles directory buffers
       view = { side = "right", width = 35 },
       renderer = { group_empty = true },
       filters = { dotfiles = false },
@@ -279,8 +260,15 @@ return {
   -- Render Markdown
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = "markdown",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = {},
+    ft = { "markdown", "copilot-chat" },
+    cmd = "RenderMarkdown",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "<leader>um", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle Markdown rendering" },
+    },
+    opts = {
+      file_types = { "markdown", "copilot-chat" },
+      latex = { enabled = true, converter = "latex2text" },
+    },
   },
 }

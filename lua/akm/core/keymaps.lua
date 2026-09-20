@@ -46,9 +46,7 @@ keymap("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 keymap("n", "<leader>Q", ":qa!<CR>", { desc = "Quit all force" })
 
--- File explorer (pv = project view, like your old config)
-keymap("n", "<leader>pv", ":Oil<CR>", { desc = "File explorer" })
-keymap("n", "<leader>e", ":Oil<CR>", { desc = "File explorer" })
+-- File explorer mappings are defined by their plugin specs in editor.lua.
 
 -- Search & Replace
 keymap("n", "<leader>h", ":nohlsearch<CR>", { desc = "Clear search highlight" })

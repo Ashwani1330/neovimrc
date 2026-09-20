@@ -4,7 +4,7 @@
 return {
   -- Mason: Installer
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     lazy = false,
     opts = {
       ui = {
@@ -18,17 +18,11 @@ return {
     },
   },
 
-  -- Mason-LSPConfig bridge
+  -- Setup runs after server configuration, with one owner for LSP activation.
   {
-    "williamboman/mason-lspconfig.nvim",
-    lazy = false,
+    "mason-org/mason-lspconfig.nvim",
+    lazy = true,
     dependencies = { "mason.nvim" },
-    opts = {
-      ensure_installed = {
-        "lua_ls", "rust_analyzer", "clangd",
-      },
-      automatic_installation = true,
-    },
   },
 
   -- LSP Configuration
@@ -41,18 +35,9 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Override global LSP floating window borders
-      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = opts.border or "rounded"
-        return orig_util_open_floating_preview(contents, syntax, opts, ...)
-      end
-
-      -- 1. Modern LspAttach Autocommand (Decouples keymaps from server setup)
+      -- Buffer-local shortcuts when a language server attaches
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
@@ -66,8 +51,8 @@ return {
           map("n", "K", vim.lsp.buf.hover, "Hover documentation")
           map("n", "<leader>vws", vim.lsp.buf.workspace_symbol, "Workspace symbols")
           map("n", "<leader>vd", vim.diagnostic.open_float, "Diagnostics float")
-          map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
-          map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+          map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, "Previous diagnostic")
+          map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, "Next diagnostic")
           map("n", "<leader>vca", vim.lsp.buf.code_action, "Code action")
           map("n", "<leader>vrr", vim.lsp.buf.references, "References")
           map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
@@ -75,7 +60,7 @@ return {
         end,
       })
 
-      -- 2. FIX: Use new 'signs.text' API instead of deprecated 'sign_define'
+      -- Diagnostics use the native signs API
       vim.diagnostic.config({
         virtual_text = {
           prefix = "●",
@@ -87,10 +72,10 @@ return {
         },
         signs = {
           text = {
-            [vim.diagnostic.severity.ERROR] = " ",
-            [vim.diagnostic.severity.WARN] = " ",
-            [vim.diagnostic.severity.HINT] = " ",
-            [vim.diagnostic.severity.INFO] = " ",
+            [vim.diagnostic.severity.ERROR] = "✗",
+            [vim.diagnostic.severity.WARN] = "!",
+            [vim.diagnostic.severity.HINT] = "?",
+            [vim.diagnostic.severity.INFO] = "i",
           },
         },
         underline = true,
@@ -105,7 +90,6 @@ return {
             Lua = {
               diagnostics = { globals = { "vim" } },
               workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
                 checkThirdParty = false,
               },
               telemetry = { enable = false },
@@ -127,20 +111,15 @@ return {
         clangd = {},
       }
 
-      -- 3. FIX: Handle deprecation of lspconfig framework in Neovim 0.11+
       for server, config in pairs(servers) do
-        -- Merge defaults
         config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {})
-
-        if vim.fn.has("nvim-0.11") == 1 then
-          -- New native API for 0.11+
-          vim.lsp.config(server, config)
-          vim.lsp.enable(server)
-        else
-          -- Legacy API for 0.10
-          lspconfig[server].setup(config)
-        end
+        vim.lsp.config(server, config)
       end
+      require("mason-lspconfig").setup({
+        ensure_installed = { "lua_ls", "pyright", "ts_ls", "rust_analyzer", "clangd" },
+        automatic_enable = false,
+      })
+      vim.lsp.enable(vim.tbl_keys(servers))
     end,
   },
 
@@ -148,8 +127,6 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    opts = {
-      library = { { path = "luvit-meta/library", words = { "vim%.uv" } } },
-    },
+    opts = {},
   },
 }

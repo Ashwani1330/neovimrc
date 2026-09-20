@@ -26,13 +26,13 @@ return {
         -- Navigation
         map("n", "]c", function()
           if vim.wo.diff then return "]c" end
-          vim.schedule(function() gs.next_hunk() end)
+          vim.schedule(function() gs.nav_hunk("next") end)
           return "<Ignore>"
         end, { expr = true, desc = "Next hunk" })
 
         map("n", "[c", function()
           if vim.wo.diff then return "[c" end
-          vim.schedule(function() gs.prev_hunk() end)
+          vim.schedule(function() gs.nav_hunk("prev") end)
           return "<Ignore>"
         end, { expr = true, desc = "Previous hunk" })
 
@@ -51,7 +51,7 @@ return {
         map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame line" })
         map("n", "<leader>hd", gs.diffthis, { desc = "Diff this" })
         map("n", "<leader>hD", function() gs.diffthis("~") end, { desc = "Diff this ~" })
-        map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle deleted" })
+        map("n", "<leader>td", gs.preview_hunk_inline, { desc = "Preview deleted lines" })
 
         -- Text object
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })

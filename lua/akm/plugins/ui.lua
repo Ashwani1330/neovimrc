@@ -2,10 +2,10 @@
 -- UI enhancements and colorscheme
 
 return {
-
   {
     "rebelot/kanagawa.nvim",
     name = "kanagawa",
+    enabled = false, -- Enable when switching back to Kanagawa
     lazy = false,
     priority = 1000,
     config = function()
@@ -85,6 +85,32 @@ return {
     end,
   },
   ]] --
+  {
+    "marekh19/meowsoot.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("meowsoot").setup({
+        style = "night", -- "night" (warm dark), "moon" (cool dark), "dawn" (light)
+        transparent = true,
+        terminal_colors = true,
+        styles = {
+          comments = { italic = true },
+          keywords = {},
+          functions = {},
+          variables = {},
+          sidebars = "dark", -- "dark", "transparent", "normal"
+          floats = "dark",
+        },
+        plugins = {
+          all = false,
+          auto = true, -- Detect installed plugins through lazy.nvim
+        },
+        cache = true,
+      })
+      vim.cmd.colorscheme("meowsoot")
+    end,
+  },
 
   -- Lualine - Statusline
   {
@@ -94,20 +120,12 @@ return {
     opts = function()
       -- LSP progress
       local function lsp_progress()
-        local messages = vim.lsp.util.get_progress_messages()
-        if #messages == 0 then
-          return ""
-        end
-        local status = {}
-        for _, msg in pairs(messages) do
-          table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
-        end
-        return table.concat(status, " | ")
+        return (vim.lsp.status():gsub("%%", "%%%%"))
       end
 
       return {
         options = {
-          theme = "auto",
+          theme = "meowsoot",
           globalstatus = true,
           component_separators = { left = "", right = "" },
           section_separators = { left = "", right = "" },
@@ -116,7 +134,7 @@ return {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = {
-            { "filename",  path = 1 },
+            { "filename", path = 1 },
             { lsp_progress },
           },
           lualine_x = { "encoding", "fileformat", "filetype" },

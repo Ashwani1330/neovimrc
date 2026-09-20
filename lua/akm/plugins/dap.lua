@@ -36,7 +36,8 @@ return {
 
       -- Mason DAP setup
       require("mason-nvim-dap").setup({
-        automatic_installation = true,
+        automatic_installation = false,
+        handlers = {}, -- Configure Mason-managed adapters, including codelldb
         ensure_installed = {
           "python",
           "codelldb", -- Rust/C/C++
@@ -95,29 +96,7 @@ return {
       vim.fn.sign_define("DapLogPoint", { text = "◆", texthl = "DapLogPoint" })
       vim.fn.sign_define("DapStopped", { text = "→", texthl = "DapStopped" })
 
-      -- Python configuration
-      dap.adapters.python = {
-        type = "executable",
-        command = "python",
-        args = { "-m", "debugpy.adapter" },
-      }
 
-      dap.configurations.python = {
-        {
-          type = "python",
-          request = "launch",
-          name = "Launch file",
-          program = "${file}",
-          pythonPath = function()
-            local venv = os.getenv("VIRTUAL_ENV")
-            if venv then
-              return venv .. "/bin/python"
-            else
-              return "/usr/bin/python3"
-            end
-          end,
-        },
-      }
     end,
   },
 
@@ -127,7 +106,11 @@ return {
     ft = "python",
     dependencies = { "mfussenegger/nvim-dap" },
     config = function()
-      require("dap-python").setup("python")
+      local python = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+      if vim.fn.executable(python) ~= 1 then
+        python = vim.fn.exepath("python3")
+      end
+      require("dap-python").setup(python)
     end,
   },
 }
