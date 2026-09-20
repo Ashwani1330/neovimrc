@@ -1,92 +1,86 @@
-# ⚡Neovim Configuration
+<div align="center">
+  <img src="assets/readme/retro-coder.gif" width="500" alt="Late-90s cyber anime character using a computer" />
 
-A blazing fast, fully-featured Neovim configuration built for Linux and macOS. It includes LSP support, debugging (DAP), AI assistance (Copilot), and a refined UI, all managed by `lazy.nvim`.
+  <pre>
+╔══════════════════════════════════════════╗
+║  N E O V I M // P E R S O N A L   R C  ║
+╚══════════════════════════════════════════╝
+  </pre>
+
+  <p><code>FAST EDITS · SMART TOOLS · LATE-NIGHT GLOW</code></p>
+
+  <p>
+    <img src="https://img.shields.io/badge/SYSTEM-NEOVIM_0.12+-00ff66?style=plastic&labelColor=111111" alt="Neovim 0.12+" />
+    <img src="https://img.shields.io/badge/CONFIG-LUA-b18cff?style=plastic&labelColor=111111" alt="Lua configuration" />
+    <img src="https://img.shields.io/badge/STATUS-ONLINE-00ccff?style=plastic&labelColor=111111" alt="Status online" />
+  </p>
+
+  <p>
+    <a href="#installation">[ BOOT ]</a>　
+    <a href="#features">[ MODULES ]</a>　
+    <a href="#keybindings">[ KEY MAP ]</a>　
+    <a href="#troubleshooting">[ HELP ]</a>
+  </p>
+
+  <sub>animation via <a href="https://giphy.com/gifs/udK21RQeWtaGQ">GIPHY</a></sub>
+</div>
 
 > [!IMPORTANT]
-> **🪟 Windows Users:** Please check the [windows branch](https://github.com/ashwani1330/neovimrc/tree/windows) for a configuration optimized for PowerShell and Windows build tools.
+> `SYSTEM REQUIREMENT:` **Neovim 0.12+** and **tree-sitter-cli 0.26.1+**. Windows users should boot the dedicated [windows branch](https://github.com/ashwani1330/neovimrc/tree/windows).
 
-## Screenshot
-<img width="1916" height="1065" alt="image" src="https://github.com/user-attachments/assets/da42680f-f1ba-4545-9dc8-75ba9b34af0f" />
+<details>
+<summary><strong>[ SCREEN CAPTURE ] See the editor</strong></summary>
+<br>
+<img width="1916" height="1065" alt="Neovim configuration preview" src="https://github.com/user-attachments/assets/da42680f-f1ba-4545-9dc8-75ba9b34af0f" />
+</details>
 
+<a id="installation"></a>
 
-## 📋 Requirements
-
-This configuration targets **Neovim 0.12+** and requires **tree-sitter-cli 0.26.1+**, a C compiler, `curl`, and `tar`. Install the CLI using your package manager or an official Treesitter release binary, rather than npm. Distribution packages for Neovim may be older than this requirement.
-
-### 1. Install Neovim & Tools
-
-**Ubuntu / Debian:**
-
-```bash
-sudo apt update
-sudo apt install neovim build-essential ripgrep fd-find git
-
-```
-
-**Fedora / RHEL:**
-```bash
-sudo dnf install neovim gcc make ripgrep fd-find git
-
-```
-
-**Arch Linux:**
-
-```bash
-sudo pacman -S neovim base-devel ripgrep fd git tree-sitter
-
-```
-
-**macOS (Homebrew):**
-
-```bash
-brew install neovim ripgrep fd gcc tree-sitter
-
-```
-
-### 2. Install Language Runtimes
-
-For [Mason.nvim](https://github.com/mason-org/mason.nvim) to install language servers (LSP) and formatters, you need:
-
-* **Node.js** (npm): Required for `pyright`, `ts_ls`, `bashls`, etc.
-* **Python**: Required for `debugpy` and Python tooling.
-* **Rust (Cargo)**: Optional, but recommended for compiling some tools.
-  
----
-
-## 🚀 Installation
-
-### 1. Back up existing config
+## `01 // BOOT SEQUENCE`
 
 ```bash
 mv ~/.config/nvim ~/.config/nvim.bak
 mv ~/.local/share/nvim ~/.local/share/nvim.bak
-
+git clone https://github.com/ashwani1330/neovimrc.git ~/.config/nvim
+nvim
 ```
 
-### 2. Clone the repository
+On first launch, `lazy.nvim` installs the plugins and Treesitter parsers. Run `:checkhealth` when it finishes.
+
+<details>
+<summary><strong>[ HARDWARE / SOFTWARE CHECK ]</strong></summary>
+
+Alongside Neovim, install a C compiler, `git`, `ripgrep`, `fd`, `curl`, `tar`, and the Treesitter CLI from your package manager or an official release binary—not npm.
 
 ```bash
-git clone https://github.com/ashwani1330/neovimrc.git ~/.config/nvim
+# Ubuntu / Debian
+sudo apt update && sudo apt install neovim build-essential ripgrep fd-find git
 
+# Fedora / RHEL
+sudo dnf install neovim gcc make ripgrep fd-find git
+
+# Arch Linux
+sudo pacman -S neovim base-devel ripgrep fd git tree-sitter
+
+# macOS
+brew install neovim ripgrep fd gcc tree-sitter
 ```
 
-### 3. Launch Neovim
-
-Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and install all plugins.
-
-* Wait for plugin and parser installation to finish.
-* Run `:checkhealth` to verify everything is green.
+Mason also needs Node.js for JavaScript-based language servers, Python for `debugpy`, and optionally Rust/Cargo for compiled tooling.
+</details>
 
 ---
 
-## ⌨️ Keybindings
+<a id="keybindings"></a>
+
+## `02 // KEY MAP`
 
 **Leader Key:** `Space`
 
 <details>
-<summary><strong>CLICK TO VIEW ALL KEYBINDINGS</strong></summary>
+<summary><strong>[ OPEN KEY DATABASE ]</strong></summary>
 
-### 📂 File & Window Management
+### `[ FILES / WINDOWS ]`
 
 | Key | Action |
 | --- | --- |
@@ -100,7 +94,7 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `<C-\>` | Toggle Terminal |
 | `<leader>fb` | Switch Buffers (Telescope) |
 
-### 🧠 LSP (Code Intelligence)
+### `[ LSP / CODE INTELLIGENCE ]`
 
 | Key | Action |
 | --- | --- |
@@ -114,7 +108,7 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `[d` / `]d` | Previous / Next Diagnostic |
 | `<leader>f` | Format File |
 
-### 🔍 Telescope (Search)
+### `[ SEARCH / TELESCOPE ]`
 
 | Key | Action |
 | --- | --- |
@@ -128,7 +122,7 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `<leader>fh` | Help Tags |
 | `<leader>fk` | Keymaps |
 
-### 🤖 AI (Copilot)
+### `[ AI / COPILOT ]`
 
 | Key | Action |
 | --- | --- |
@@ -145,7 +139,7 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `<leader>af` | Fix Bug (Visual) |
 | `<leader>at` | Generate Tests (Visual) |
 
-### 🌲 Git (Fugitive & Gitsigns)
+### `[ GIT / FUGITIVE + GITSIGNS ]`
 
 | Key | Action |
 | --- | --- |
@@ -161,7 +155,7 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `<leader>hp` | Preview Hunk |
 | `<leader>tb` | Toggle Blame Ghost Text |
 
-### 🐛 Debugging (DAP)
+### `[ DEBUG / DAP ]`
 
 | Key | Action |
 | --- | --- |
@@ -175,7 +169,7 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 | `<leader>dr` | Open REPL |
 | `<leader>dt` | Terminate |
 
-### 🛠️ Utility & Extra
+### `[ UTILITY / EXTRA ]`
 
 | Key | Action |
 | --- | --- |
@@ -192,47 +186,59 @@ Open `nvim` in your terminal. `lazy.nvim` will automatically bootstrap and insta
 
 ---
 
-## 🎨 Features & Plugins
+<a id="features"></a>
 
-* **Plugin Manager:** [lazy.nvim](https://github.com/folke/lazy.nvim)
-* **LSP:** Mason, Mason-LSPConfig, nvim-lspconfig
-* **Completion:** nvim-cmp, LuaSnip
-* **Syntax:** nvim-treesitter and textobjects, both on `main`, with native Neovim highlighting and folding
-* **Markdown:** render-markdown.nvim; normal mode renders, insert mode shows source
-* **Theme:** Meowsoot night with its matching Lualine theme
-* **Formatting:** Language server formatting (`<leader>f`); Conform.nvim is an optional commented configuration
-* **Explorer:** Oil.nvim (Buffer-like file editing) & Nvim-Tree
-* **Fuzzy Finder:** Telescope.nvim (with fzf-native for speed)
-* **Git:** Gitsigns & Fugitive
-* **AI:** Github Copilot & CopilotChat.nvim
-* **Debugging:** nvim-dap & nvim-dap-ui
+## `03 // LOADED MODULES`
+
+| ID | Module | Provides |
+| :---: | --- | --- |
+| `LSP` | **Language intelligence** | Native LSP, Mason, nvim-cmp, LuaSnip |
+| `TS` | **Syntax & structure** | Treesitter highlighting, folding, selection, and textobjects |
+| `NAV` | **Navigation** | Telescope search, Oil buffers, and NvimTree sidebar |
+| `AI` | **Pair programming** | Copilot ghost text and CopilotChat workflows |
+| `DAP` | **Debugging** | Python, Rust, C, and C++ adapters |
+| `GIT` | **Version control** | Gitsigns feedback and Fugitive commands |
+| `TXT` | **Writing** | Rendered Markdown, LaTeX text, and CSV alignment |
+| `UI` | **Interface** | Meowsoot night, Lualine, rounded windows, and native UI polish |
 
 ---
 
-## 🔧 Troubleshooting
+<a id="troubleshooting"></a>
 
-**1. "Make" not found / Telescope FZF error**
-Ensure you have `make` and `gcc` installed (see Requirements). Then run:
+## `04 // TROUBLESHOOTING`
 
-```vim
-:Lazy build telescope-fzf-native.nvim
+<details>
+<summary><strong>[ ERR:BUILD ] Telescope FZF is missing</strong></summary>
 
-```
+Install `make` and a C compiler, then run `:Lazy build telescope-fzf-native.nvim`.
+</details>
 
-**2. Treesitter errors on startup**
-Ensure `tree-sitter --version` reports 0.26.1 or newer. If syntax highlighting is missing, install missing parsers and update existing ones:
+<details>
+<summary><strong>[ ERR:PARSE ] Treesitter highlighting is missing</strong></summary>
 
-```vim
-:Lazy build nvim-treesitter
+Confirm `tree-sitter --version` is 0.26.1 or newer, then run `:Lazy build nvim-treesitter`.
+</details>
 
-```
+<details>
+<summary><strong>[ ERR:GLYPH ] Icons look wrong</strong></summary>
 
-**3. Icons are missing or look weird**
-Make sure you are using a [Nerd Font](https://www.nerdfonts.com/) in your terminal.
+Use a patched [Nerd Font](https://www.nerdfonts.com/) in your terminal.
+</details>
 
+<details>
+<summary><strong>[ ERR:MARKUP ] Markdown or LaTeX does not render</strong></summary>
 
-**4. Markdown rendering**
-The `markdown` and `markdown_inline` parsers must both be installed. LaTeX math additionally uses the `latex` parser and `latex2text` converter (`uv tool install pylatexenc`). Keep `~/.local/bin` on your PATH. Open [the Markdown preview](docs/markdown-preview.md) to try headings, tables, code, and math. Rendering and syntax highlighting work together; use `:RenderMarkdown toggle` or `<leader>um` to switch rendering. Markdown uses built-in list indentation and preserves trailing spaces on save, since two spaces encode a hard line break.
+Install the `markdown`, `markdown_inline`, and `latex` parsers. For math conversion, run `uv tool install pylatexenc` and keep `~/.local/bin` on your `PATH`. Try the [Markdown preview](docs/markdown-preview.md) and toggle rendering with `<leader>um`.
+</details>
 
-**5. Language servers and Python debugging**
-Mason installs `lua_ls`, `pyright`, `ts_ls`, `rust_analyzer`, and `clangd`. Inspect installation status using `:Mason` and active clients using `:checkhealth vim.lsp`. Python debugging uses Mason's debugpy environment for the adapter and the project's Python environment for the program.
+<details>
+<summary><strong>[ ERR:TOOLS ] Language servers or Python debugging are unavailable</strong></summary>
+
+Inspect tools with `:Mason` and active clients with `:checkhealth vim.lsp`. Python debugging uses Mason's `debugpy` adapter and the active project interpreter.
+</details>
+
+---
+
+<div align="center">
+  <pre>-- EOF --  best viewed in a terminal after midnight  -- EOF --</pre>
+</div>
